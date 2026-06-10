@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raghav Chandra — Graphic Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --pink: #EA33A7;
+  --navy: #253985;
+  --orange: #CC7C2E;
+  --cream: #F2EDE6;
+  --black: #000000;
+  --font-display: 'Poppins', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  font-family: var(--font-body);
+  color: var(--black);
+  overflow-x: hidden;
+}
+
+/* ─────────────────────────────────────────
+   LOADER SCREEN
+───────────────────────────────────────── */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--cream);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-icons {
+  position: relative;
+  width: 320px;
+  height: 200px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* Each loader icon shoots up from center-bottom */
+.loader-icon {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  opacity: 0;
+  transform: translateX(-50%) translateY(0px) scale(0.3) rotate(var(--lr));
+}
+
+.loader-icon.shoot {
+  animation: shootUp var(--ldur, 0.55s) var(--ldelay, 0s) cubic-bezier(0.22, 1.4, 0.55, 1) forwards;
+}
+
+@keyframes shootUp {
+  0%   { opacity: 0; transform: translateX(var(--lx, -50%)) translateY(40px) scale(0.2) rotate(var(--lr, 0deg)); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: translateX(var(--lx, -50%)) translateY(var(--ly, -80px)) scale(1) rotate(var(--lr, 0deg)); }
+}
+
+.loader-text {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--navy);
+  letter-spacing: 0.05em;
+  opacity: 0;
+  animation: fadeIn 0.4s 0.3s forwards;
+}
+
+.loader-dot {
+  display: inline-block;
+  animation: dotPulse 1.2s infinite;
+}
+.loader-dot:nth-child(2) { animation-delay: 0.2s; }
+.loader-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { opacity: 0.3; }
+  40% { opacity: 1; }
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* ─────────────────────────────────────────
+   NAV
+───────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.1rem 2.5rem;
+  background: rgba(242,237,230,0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: border-bottom 0.3s;
+}
+
+/* ── NAV LOGO: swap your own logo image here ──
+   Replace the <span class="nav-name"> block below with:
+   <a href="#hero"><img src="your-logo.png" alt="Raghav Chandra" class="nav-logo-img"></a>
+   and add:  .nav-logo-img { height: 36px; width: auto; }
+*/
+.nav-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--navy);
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--black);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--pink); }
+
+/* ─────────────────────────────────────────
+   HERO
+───────────────────────────────────────── */
+#hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-center {
+  text-align: center;
+  z-index: 10;
+  position: relative;
+  max-width: 600px;
+  padding: 0 2rem;
+}
+
+/* ── BRAND ICON above eyebrow ──
+   Replace the SVG inside .hero-brand-icon with your own logo SVG,
+   or swap to: <img src="your-brand-icon.png" alt="" style="height:64px;">
+*/
+.hero-brand-icon {
+  margin-bottom: 1rem;
+  opacity: 0;
+  animation: fadeUp 0.5s 1.2s forwards;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-logo {
+  width: 250px;
+  height: auto;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+  opacity: 0;
+  animation: fadeUp 0.6s 1.4s forwards;
+}
+
+.hero-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  line-height: 1.05;
+  color: var(--navy);
+  letter-spacing: -0.03em;
+  margin-bottom: 1.25rem;
+  opacity: 0;
+  animation: fadeUp 0.7s 1.6s forwards;
+}
+
+.hero-name span { color: var(--pink); }
+
+.hero-bio {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #444;
+  max-width: 440px;
+  margin: 0 auto 2rem;
+  opacity: 0;
+  animation: fadeUp 0.7s 1.8s forwards;
+}
+
+.hero-bio a {
+  color: var(--navy);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.7s 2s forwards;
+}
+
+/* ─────────────────────────────────────────
+   BUTTONS
+───────────────────────────────────────── */
+.btn-primary {
+  background: var(--pink);
+  color: white;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  letter-spacing: 0.02em;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(234,51,167,0.3);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--navy);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 100px;
+  border: 2px solid var(--navy);
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-block;
+}
+
+.btn-secondary:hover {
+  background: var(--navy);
+  color: white;
+}
+
+/* ─────────────────────────────────────────
+   SCATTERED HERO ICONS
+───────────────────────────────────────── */
+.icon-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/*
+  HOW TO REPLACE AN ICON:
+  Each .floating-icon div contains one <svg>.
+  To swap it, just replace the <svg>...</svg> inside
+  the corresponding div with your own SVG markup,
+  or use: <img src="your-icon.png" style="width:var(--sz);height:var(--sz);">
+  The --sz, --r (rotation), --delay, --dur, position (top/left/right) are all
+  controlled via CSS custom props on the style attribute — easy to adjust.
+*/
+.floating-icon {
+  position: absolute;
+  opacity: 0;
+}
+
+.floating-icon.scattered {
+  animation: scatterTo 0.7s var(--sdelay, 0s) cubic-bezier(0.34,1.3,0.64,1) forwards,
+             floatAnim var(--dur) var(--float-delay) ease-in-out infinite alternate;
+}
+
+.floating-icon svg {
+  width: var(--sz);
+  height: var(--sz);
+  display: block;
+}
+
+@keyframes scatterTo {
+  0%   { opacity: 0; transform: translate(var(--from-x,0), var(--from-y,0)) scale(0.5) rotate(0deg); }
+  100% { opacity: 1; transform: translate(0,0) scale(1) rotate(var(--r,0deg)); }
+}
+
+@keyframes floatAnim {
+  from { transform: scale(1) rotate(var(--r)) translateY(0px); }
+  to   { transform: scale(1) rotate(var(--r)) translateY(var(--lift,-8px)); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─────────────────────────────────────────
+   WORK SECTION
+───────────────────────────────────────── */
+#work {
+  padding: 7rem 2.5rem 5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section-label {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 0.5rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  color: var(--navy);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.see-all {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--pink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--pink);
+  padding-bottom: 2px;
+  transition: opacity 0.2s;
+}
+
+.see-all:hover { opacity: 0.7; }
+
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.25rem;
+}
+
+.work-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34,1.2,0.64,1);
+  text-decoration: none;
+  display: block;
+  color: inherit;
+}
+
+.work-card:hover { transform: translateY(-6px); }
+
+.work-card.large  { grid-column: span 7; }
+.work-card.medium { grid-column: span 5; }
+.work-card.half   { grid-column: span 6; }
+
+.work-card-thumb {
+  width: 100%;
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.thumb-pink   { background: #EA33A7; }
+.thumb-navy   { background: #253985; }
+.thumb-orange { background: #CC7C2E; }
+.thumb-cream  { background: #F2EDE6; border-bottom: 1px solid #e0d9d0; }
+
+.thumb-deco {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb-deco svg { width: 80px; height: 80px; opacity: 0.25; }
+
+.work-card-label {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 1.25rem 1.25rem 0;
+  color: var(--orange);
+}
+
+.work-card-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--navy);
+  padding: 0.3rem 1.25rem 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.project-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ─────────────────────────────────────────
+   ALL WORKS PAGE (hidden by default)
+───────────────────────────────────────── */
+#all-works {
+  display: none;
+  padding: 7rem 2.5rem 5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+
+#all-works.visible { display: block; }
+
+.all-works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.all-works-grid .work-card { grid-column: span 1; }
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--navy);
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 2rem;
+  transition: color 0.2s;
+}
+
+.back-btn:hover { color: var(--pink); }
+
+/* ─────────────────────────────────────────
+   ABOUT
+───────────────────────────────────────── */
+#about {
+  background: var(--navy);
+  padding: 7rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+}
+
+.about-text .section-label { color: var(--orange); }
+.about-text .section-title { color: var(--cream); }
+
+.about-body {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(242,237,230,0.75);
+  margin: 1.5rem 0 2.5rem;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.skill-pill {
+  background: rgba(255,255,255,0.08);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.15);
+  text-align: center;
+}
+
+/* ── ABOUT PHOTO PANEL ──
+   This panel is where your photo goes.
+   Replace the placeholder div with:
+   <img src="your-photo.png" alt="Raghav Chandra" class="about-photo">
+   Your photo should have a transparent background (PNG).
+   It will sit right-aligned next to the text.
+*/
+.about-photo-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 500px;
+}
+
+.about-photo-frame {
+  position: relative;
+  width: 300px;
+}
+
+/* Decorative vertical film-strip style frame */
+.about-photo-strips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+}
+
+.about-strip {
+  width: 100%;
+  height: 140px;
+  background: rgba(255,255,255,0.07);
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+/* The first strip gets the pink accent */
+.about-strip:first-child { border-color: var(--pink); background: rgba(234,51,167,0.08); }
+
+.about-strip-label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  text-align: center;
+  padding: 0.5rem;
+}
+
+/* The big "about" text overlay — inspired by the reference */
+.about-big-text {
+  position: absolute;
+  right: -40px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  transform-origin: center center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 5rem;
+  color: var(--pink);
+  opacity: 0.15;
+  white-space: nowrap;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* Decorative blob behind */
+.about-blob {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  background: var(--pink);
+  border-radius: 60% 40% 70% 30% / 40% 60% 30% 70%;
+  opacity: 0.07;
+  animation: blobMorph 8s ease-in-out infinite alternate;
+  z-index: 0;
+}
+
+@keyframes blobMorph {
+  from { border-radius: 60% 40% 70% 30% / 40% 60% 30% 70%; }
+  to   { border-radius: 30% 70% 40% 60% / 60% 30% 70% 40%; }
+}
+
+/* ── HOW TO ADD YOUR PHOTO ──
+   Once you have a PNG with transparent background:
+   1. Place it in the same folder as index.html
+   2. Find the .about-strip divs and replace the content of the
+      first one with: <img src="your-photo.png" class="about-photo-img">
+   3. Add this CSS:
+      .about-photo-img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+*/
+
+/* ─────────────────────────────────────────
+   CONTACT SECTION
+───────────────────────────────────────── */
+#contact {
+  padding: 7rem 2.5rem;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.contact-big {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  color: var(--navy);
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  margin-bottom: 1.25rem;
+}
+
+.contact-big em {
+  font-style: normal;
+  color: var(--pink);
+}
+
+.contact-sub {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #555;
+  max-width: 420px;
+  margin: 0 auto 2.5rem;
+}
+
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ─────────────────────────────────────────
+   CONTACT / MESSAGE PAGE
+───────────────────────────────────────── */
+#message-page {
+  display: none;
+  padding: 7rem 2.5rem 5rem;
+  max-width: 700px;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+
+#message-page.visible { display: block; }
+
+.message-heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--navy);
+  letter-spacing: -0.03em;
+  margin-bottom: 0.5rem;
+}
+
+.message-heading span { color: var(--pink); }
+
+.message-sub {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 2.5rem;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--black);
+  background: white;
+  border: 1.5px solid rgba(37,57,133,0.2);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+  resize: none;
+  appearance: none;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: var(--pink);
+}
+
+.form-group textarea { height: 140px; }
+
+.form-submit {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.form-note {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.form-success {
+  display: none;
+  background: rgba(37,57,133,0.06);
+  border: 1.5px solid rgba(37,57,133,0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.form-success.show { display: block; }
+
+.form-success p {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* ─────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────── */
+footer {
+  border-top: 1px solid rgba(0,0,0,0.1);
+  padding: 1.75rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+footer p {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: #888;
+}
+
+.footer-brand {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--navy);
+}
+
+.footer-socials {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.footer-socials a {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #888;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-socials a:hover { color: var(--pink); }
+
+/* ─────────────────────────────────────────
+   SCROLL-TO-TOP BUTTON
+───────────────────────────────────────── */
+#scroll-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 44px;
+  height: 44px;
+  background: var(--navy);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  z-index: 50;
+  box-shadow: 0 4px 16px rgba(37,57,133,0.25);
+}
+
+#scroll-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#scroll-top:hover {
+  background: var(--pink);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(234,51,167,0.3);
+}
+
+/* ─────────────────────────────────────────
+   PAGE SECTIONS (for single-page routing)
+───────────────────────────────────────── */
+.page-section { display: block; }
+.page-section.hidden { display: none; }
+
+/* ─────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────── */
+@media (max-width: 900px) {
+  .work-card.large, .work-card.medium { grid-column: span 12; }
+  .work-card.half { grid-column: span 12; }
+  .all-works-grid { grid-template-columns: 1fr 1fr; }
+  .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .about-photo-panel { height: auto; }
+  .form-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  nav { padding: 1rem 1.25rem; }
+  .nav-links { gap: 1.2rem; }
+  .nav-links a { font-size: 0.8rem; }
+  #work, #all-works, #message-page { padding: 5rem 1.25rem 3rem; }
+  #about { padding: 5rem 1.25rem; }
+  #contact { padding: 5rem 1.25rem; }
+  .all-works-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-icon, .loader-icon { animation: none !important; opacity: 1; }
+  .about-blob { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     LOADER SCREEN
+     Icons burst up from center before scattering
+════════════════════════════════════════ -->
+<div id="loader">
+  <div class="loader-icons">
+
+    <!-- Loader Icon 1: Paintbrush — shoots left-upward -->
+    <div class="loader-icon" id="li1" style="--lr:-20deg;--lx:-110px;--ly:-100px;--ldelay:0.1s;--ldur:0.6s;">
+      <svg width="52" height="52" viewBox="0 0 58 58" fill="none">
+        <path d="M12 46 C12 40 16 38 20 38 C20 38 22 28 32 18 L44 10 L48 14 L40 26 C30 36 28 38 28 38 C28 42 26 46 20 48 C16 49 12 46 12 46Z" stroke="#EA33A7" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+        <circle cx="19" cy="42" r="3" fill="#EA33A7"/>
+      </svg>
+    </div>
+
+    <!-- Loader Icon 2: Sparkle — shoots straight up -->
+    <div class="loader-icon" id="li2" style="--lr:0deg;--lx:-50%;--ly:-140px;--ldelay:0.2s;--ldur:0.55s;">
+      <svg width="48" height="48" viewBox="0 0 52 52" fill="none">
+        <path d="M26 6 L29 22 L45 26 L29 30 L26 46 L23 30 L7 26 L23 22 Z" stroke="#CC7C2E" stroke-width="2" fill="none"/>
+        <path d="M44 6 L45.5 11 L51 12 L45.5 13 L44 18 L42.5 13 L37 12 L42.5 11 Z" fill="#EA33A7"/>
+        <path d="M8 38 L9 42 L13 43 L9 44 L8 48 L7 44 L3 43 L7 42 Z" fill="#253985"/>
+      </svg>
+    </div>
+
+    <!-- Loader Icon 3: Tablet — shoots right-upward -->
+    <div class="loader-icon" id="li3" style="--lr:12deg;--lx:30px;--ly:-110px;--ldelay:0.15s;--ldur:0.58s;">
+      <svg width="56" height="56" viewBox="0 0 72 72" fill="none">
+        <rect x="8" y="12" width="44" height="36" rx="4" stroke="#253985" stroke-width="2.5" fill="none"/>
+        <rect x="14" y="18" width="28" height="20" rx="2" fill="#F2EDE6" stroke="#253985" stroke-width="1.5"/>
+        <circle cx="30" cy="52" r="3" fill="#253985"/>
+        <line x1="54" y1="16" x2="64" y2="8" stroke="#EA33A7" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="64" cy="8" r="3" fill="#EA33A7"/>
+      </svg>
+    </div>
+
+    <!-- Loader Icon 4: Camera — shoots far left -->
+    <div class="loader-icon" id="li4" style="--lr:8deg;--lx:-160px;--ly:-60px;--ldelay:0.25s;--ldur:0.62s;">
+      <svg width="52" height="52" viewBox="0 0 64 64" fill="none">
+        <rect x="6" y="18" width="52" height="36" rx="5" stroke="#CC7C2E" stroke-width="2.5" fill="none"/>
+        <path d="M22 18 L26 10 H38 L42 18" stroke="#CC7C2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="32" cy="36" r="9" stroke="#CC7C2E" stroke-width="2.5" fill="none"/>
+        <circle cx="32" cy="36" r="4" fill="#CC7C2E"/>
+        <circle cx="48" cy="25" r="2.5" fill="#CC7C2E"/>
+      </svg>
+    </div>
+
+    <!-- Loader Icon 5: Headphones — shoots far right -->
+    <div class="loader-icon" id="li5" style="--lr:-8deg;--lx:130px;--ly:-90px;--ldelay:0.3s;--ldur:0.6s;">
+      <svg width="54" height="54" viewBox="0 0 66 66" fill="none">
+        <path d="M12 34 C12 20 20 10 33 10 C46 10 54 20 54 34" stroke="#EA33A7" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <rect x="6" y="30" width="12" height="18" rx="6" stroke="#EA33A7" stroke-width="2.5" fill="none"/>
+        <rect x="48" y="30" width="12" height="18" rx="6" stroke="#EA33A7" stroke-width="2.5" fill="none"/>
+      </svg>
+    </div>
+
+  </div>
+
+  <p class="loader-text">
+    Loading<span class="loader-dot">.</span><span class="loader-dot">.</span><span class="loader-dot">.</span>
+  </p>
+</div>
+
+<!-- ═══════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════ -->
+<nav>
+  <!--
+    ╔══════════════════════════════════════╗
+    ║  YOUR LOGO GOES HERE                 ║
+    ║  To use your own logo:               ║
+    ║  1. Place your logo file (PNG/SVG)   ║
+    ║     in the same folder as this file  ║
+    ║  2. Replace the <span> below with:   ║
+    ║     <a href="#" onclick="showMain()">║
+    ║       <img src="your-logo.png"       ║
+    ║            alt="Raghav Chandra"      ║
+    ║            style="height:36px;">     ║
+    ║     </a>                             ║
+    ╚══════════════════════════════════════╝
+  -->
+  <span class="nav-name" onclick="showMain()" style="cursor:pointer;">Raghav Chandra</span>
+  <ul class="nav-links">
+    <li><a href="#work" onclick="showMain()">Work</a></li>
+    <li><a href="#about" onclick="showMain()">About</a></li>
+    <li><a href="javascript:void(0)" onclick="showMessagePage()">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════════════════════════════
+     MAIN SITE CONTENT
+════════════════════════════════════════ -->
+<div id="main-content">
+
+<!-- ── HERO ── -->
+<section id="hero">
+
+  <!-- SCATTERED ICONS
+       ─────────────────────────────────────
+       Each .floating-icon has:
+         --sz  : size of the icon
+         --r   : rotation angle
+         --sdelay : delay before scatter animation
+         --dur / --float-delay / --lift : float rhythm
+         top/left/right : final resting position
+       
+       To replace an icon with your own:
+         Option A (SVG): swap the <svg>...</svg> block
+         Option B (image): replace svg with
+           <img src="my-icon.png" style="width:var(--sz);height:var(--sz);display:block;">
+       ─────────────────────────────────────
+  -->
+  <div class="icon-field" id="iconField">
+
+    <!-- Icon 1: Tablet/stylus (top-left area) -->
+    <div class="floating-icon" data-icon="tablet"
+         style="--sz:72px;--r:-12deg;--sdelay:0s;--dur:4.2s;--float-delay:0s;--lift:-10px;top:15%;left:7%;">
+      <svg viewBox="0 0 72 72" fill="none">
+        <rect x="8" y="12" width="44" height="36" rx="4" stroke="#253985" stroke-width="2.5" fill="none"/>
+        <rect x="14" y="18" width="28" height="20" rx="2" fill="#F2EDE6" stroke="#253985" stroke-width="1.5"/>
+        <circle cx="30" cy="52" r="3" fill="#253985"/>
+        <line x1="54" y1="16" x2="64" y2="8" stroke="#EA33A7" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="64" cy="8" r="3" fill="#EA33A7"/>
+      </svg>
+    </div>
+
+    <!-- Icon 2: Camera (top-right) -->
+    <div class="floating-icon" data-icon="camera"
+         style="--sz:64px;--r:8deg;--sdelay:0.08s;--dur:5s;--float-delay:0.6s;--lift:-8px;top:12%;right:10%;">
+      <svg viewBox="0 0 64 64" fill="none">
+        <rect x="6" y="18" width="52" height="36" rx="5" stroke="#CC7C2E" stroke-width="2.5" fill="none"/>
+        <path d="M22 18 L26 10 H38 L42 18" stroke="#CC7C2E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="32" cy="36" r="9" stroke="#CC7C2E" stroke-width="2.5" fill="none"/>
+        <circle cx="32" cy="36" r="4" fill="#CC7C2E"/>
+        <circle cx="48" cy="25" r="2.5" fill="#CC7C2E"/>
+      </svg>
+    </div>
+
+    <!-- Icon 3: Paintbrush (mid-left) -->
+    <div class="floating-icon" data-icon="paintbrush"
+         style="--sz:58px;--r:-20deg;--sdelay:0.16s;--dur:4.8s;--float-delay:1.2s;--lift:-12px;top:60%;left:5%;">
+      <svg viewBox="0 0 58 58" fill="none">
+        <path d="M12 46 C12 40 16 38 20 38 C20 38 22 28 32 18 L44 10 L48 14 L40 26 C30 36 28 38 28 38 C28 42 26 46 20 48 C16 49 12 46 12 46Z" stroke="#EA33A7" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+        <circle cx="19" cy="42" r="3" fill="#EA33A7"/>
+        <line x1="32" y1="18" x2="44" y2="10" stroke="#EA33A7" stroke-width="1.5"/>
+      </svg>
+    </div>
+
+    <!-- Icon 4: Sparkle (upper-center-left) -->
+    <div class="floating-icon" data-icon="sparkle"
+         style="--sz:52px;--r:0deg;--sdelay:0.06s;--dur:3.5s;--float-delay:0.3s;--lift:-14px;top:25%;left:20%;">
+      <svg viewBox="0 0 52 52" fill="none">
+        <path d="M26 6 L29 22 L45 26 L29 30 L26 46 L23 30 L7 26 L23 22 Z" stroke="#CC7C2E" stroke-width="2" fill="none" stroke-linejoin="round"/>
+        <path d="M44 6 L45.5 11 L51 12 L45.5 13 L44 18 L42.5 13 L37 12 L42.5 11 Z" fill="#EA33A7"/>
+        <path d="M8 38 L9 42 L13 43 L9 44 L8 48 L7 44 L3 43 L7 42 Z" fill="#253985"/>
+      </svg>
+    </div>
+
+    <!-- Icon 5: Coffee (bottom-right) -->
+    <div class="floating-icon" data-icon="coffee"
+         style="--sz:60px;--r:10deg;--sdelay:0.22s;--dur:4.5s;--float-delay:1.8s;--lift:-8px;top:65%;right:8%;">
+      <svg viewBox="0 0 60 60" fill="none">
+        <path d="M10 24 L14 50 H40 L44 24 Z" stroke="#253985" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+        <path d="M44 30 C50 30 52 34 50 38 C48 42 44 42 44 42" stroke="#253985" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M8 24 H46" stroke="#253985" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M22 10 C22 10 20 14 22 16" stroke="#EA33A7" stroke-width="2" stroke-linecap="round"/>
+        <path d="M29 8 C29 8 27 13 29 15" stroke="#EA33A7" stroke-width="2" stroke-linecap="round"/>
+        <path d="M36 10 C36 10 34 14 36 16" stroke="#EA33A7" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Icon 6: Pencil (bottom-left) -->
+    <div class="floating-icon" data-icon="pencil"
+         style="--sz:56px;--r:35deg;--sdelay:0.12s;--dur:5.5s;--float-delay:0.9s;--lift:-10px;top:78%;left:22%;">
+      <svg viewBox="0 0 56 56" fill="none">
+        <path d="M12 44 L14 36 L36 14 L42 20 L20 42 Z" stroke="#CC7C2E" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+        <path d="M36 14 L40 10 C41 9 43 9 44 10 L46 12 C47 13 47 15 46 16 L42 20" stroke="#CC7C2E" stroke-width="2.5" fill="none"/>
+        <path d="M12 44 L14 36 L20 42 Z" fill="#CC7C2E"/>
+        <line x1="30" y1="18" x2="38" y2="26" stroke="#CC7C2E" stroke-width="1.5"/>
+      </svg>
+    </div>
+
+    <!-- Icon 7: Headphones (top-right mid) -->
+    <div class="floating-icon" data-icon="headphones"
+         style="--sz:66px;--r:-8deg;--sdelay:0.18s;--dur:4s;--float-delay:2.1s;--lift:-9px;top:20%;right:25%;">
+      <svg viewBox="0 0 66 66" fill="none">
+        <path d="M12 34 C12 20 20 10 33 10 C46 10 54 20 54 34" stroke="#EA33A7" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <rect x="6" y="30" width="12" height="18" rx="6" stroke="#EA33A7" stroke-width="2.5" fill="none"/>
+        <rect x="48" y="30" width="12" height="18" rx="6" stroke="#EA33A7" stroke-width="2.5" fill="none"/>
+      </svg>
+    </div>
+
+    <!-- Icon 8: Plant (mid-right) -->
+    <div class="floating-icon" data-icon="plant"
+         style="--sz:58px;--r:15deg;--sdelay:0.26s;--dur:6s;--float-delay:0.4s;--lift:-11px;top:55%;right:20%;">
+      <svg viewBox="0 0 58 58" fill="none">
+        <path d="M29 50 L29 28" stroke="#253985" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M29 28 C29 28 18 24 16 14 C16 14 28 12 32 24" stroke="#253985" stroke-width="2" fill="none" stroke-linejoin="round"/>
+        <path d="M29 36 C29 36 38 30 42 20 C42 20 30 18 28 30" stroke="#CC7C2E" stroke-width="2" fill="none" stroke-linejoin="round"/>
+        <path d="M24 50 H34" stroke="#253985" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Icon 9: Book (bottom-center-right) -->
+    <div class="floating-icon" data-icon="book"
+         style="--sz:62px;--r:-6deg;--sdelay:0.3s;--dur:4.7s;--float-delay:1.5s;--lift:-7px;top:80%;right:36%;">
+      <svg viewBox="0 0 62 62" fill="none">
+        <rect x="8" y="10" width="28" height="38" rx="3" stroke="#253985" stroke-width="2.5" fill="none"/>
+        <path d="M36 10 H46 C48 10 50 12 50 14 V48 C50 50 48 52 46 52 H36" stroke="#253985" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+        <line x1="36" y1="10" x2="36" y2="48" stroke="#253985" stroke-width="2" stroke-dasharray="3 3"/>
+        <line x1="14" y1="22" x2="28" y2="22" stroke="#EA33A7" stroke-width="2" stroke-linecap="round"/>
+        <line x1="14" y1="28" x2="24" y2="28" stroke="#EA33A7" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Icon 10: Spray can (left-mid) -->
+    <div class="floating-icon" data-icon="spray"
+         style="--sz:60px;--r:22deg;--sdelay:0.2s;--dur:5.2s;--float-delay:2.5s;--lift:-13px;top:40%;left:11%;">
+      <svg viewBox="0 0 60 60" fill="none">
+        <path d="M20 28 L20 50 C20 52 22 54 24 54 H36 C38 54 40 52 40 50 V28 Z" stroke="#EA33A7" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+        <rect x="24" y="14" width="12" height="14" rx="3" stroke="#EA33A7" stroke-width="2.5" fill="none"/>
+        <path d="M36 18 L44 12" stroke="#EA33A7" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="46" cy="10" r="2" fill="#EA33A7"/>
+        <circle cx="46" cy="16" r="1.5" fill="#CC7C2E"/>
+        <circle cx="50" cy="12" r="1.5" fill="#253985"/>
+      </svg>
+    </div>
+
+  </div>
+
+  <!-- HERO TEXT -->
+  <div class="hero-center">
+
+    <!--
+      ╔══════════════════════════════════════╗
+      ║  YOUR BRAND ICON GOES HERE           ║
+      ║  Replace the SVG below with your     ║
+      ║  own brand icon / character logo.    ║
+      ║  Works best at ~64x64px.             ║
+      ║  For a PNG: <img src="icon.png"      ║
+      ║    alt="" style="height:64px;">      ║
+      ╚══════════════════════════════════════╝
+    -->
+    <div class="hero-brand-icon">
+  <img src="logo icon.png" alt="Raghav Chandra Logo" class="hero-logo">
+</div>
+
+    <p class="hero-eyebrow">Graphic Designer &amp; Brand Storyteller</p>
+    <h1 class="hero-name">Hi, I'm <span>Raghav.</span></h1>
+    <p class="hero-bio">
+      I design brands that feel like <a href="#about">actual people</a> — with personality, warmth, and a point of view. Currently based wherever the Wi-Fi is good.
+    </p>
+    <div class="hero-actions">
+      <a href="#work" class="btn-primary">See my work</a>
+      <a href="javascript:void(0)" onclick="showMessagePage()" class="btn-secondary">Let's talk</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- ── WORK ── -->
+<section id="work">
+  <div class="section-header">
+    <div>
+      <p class="section-label">Selected Work</p>
+      <h2 class="section-title">Things I've made.</h2>
+    </div>
+    <a href="javascript:void(0)" onclick="showAllWorks()" class="see-all">All projects →</a>
+  </div>
+
+  <div class="work-grid">
+
+    <a href="javascript:void(0)" onclick="showAllWorks()" class="work-card large">
+      <div class="work-card-thumb">
+  <img src="new111.png" alt="Personal Branding Project" class="project-image">
+</div>
+      <p class="work-card-label">Brand Identity</p>
+      <p class="work-card-title">Personal Branding — Raghav Chandra</p>
+    </a>
+
+    <a href="javascript:void(0)" onclick="showAllWorks()" class="work-card medium">
+      <div class="work-card-thumb thumb-navy">
+        <div class="thumb-deco">
+          <svg viewBox="0 0 80 80" fill="none">
+            <rect x="16" y="20" width="48" height="40" rx="4" stroke="white" stroke-width="3" fill="none"/>
+            <line x1="16" y1="32" x2="64" y2="32" stroke="white" stroke-width="2"/>
+            <circle cx="26" cy="26" r="3" fill="white"/>
+            <circle cx="36" cy="26" r="3" fill="white"/>
+          </svg>
+        </div>
+      </div>
+      <p class="work-card-label">UI Design</p>
+      <p class="work-card-title">App Interface Design</p>
+    </a>
+
+    <a href="javascript:void(0)" onclick="showAllWorks()" class="work-card half">
+      <div class="work-card-thumb thumb-orange">
+        <div class="thumb-deco">
+          <svg viewBox="0 0 80 80" fill="none">
+            <path d="M20 60 L20 30 L40 15 L60 30 L60 60 Z" stroke="white" stroke-width="3" fill="none" stroke-linejoin="round"/>
+            <rect x="32" y="42" width="16" height="18" rx="2" stroke="white" stroke-width="2.5" fill="none"/>
+          </svg>
+        </div>
+      </div>
+      <p class="work-card-label">Print Design</p>
+      <p class="work-card-title">Editorial &amp; Print Collateral</p>
+    </a>
+
+    <a href="javascript:void(0)" onclick="showAllWorks()" class="work-card half">
+      <div class="work-card-thumb thumb-cream">
+        <div class="thumb-deco">
+          <svg viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="30" r="14" stroke="#253985" stroke-width="3" fill="none"/>
+            <path d="M28 50 C28 44 34 40 40 40 C46 40 52 44 52 50 L54 60 H26 Z" stroke="#253985" stroke-width="3" fill="none" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <p class="work-card-label">Illustration</p>
+      <p class="work-card-title">Character Design &amp; Illustration</p>
+    </a>
+
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="about-inner">
+
+    <div class="about-text">
+      <p class="section-label">Who I am</p>
+      <h2 class="section-title">Designer.<br>Storyteller.<br>Problem-solver.</h2>
+      <p class="about-body">
+        I'm Raghav — a graphic designer who believes good design isn't just about looking nice. It's about making people feel something. I work across brand identity, illustration, print, and digital, with a soft spot for personality-driven work that actually means something to the people it's made for.
+      </p>
+      <div class="skills-grid">
+        <span class="skill-pill">Brand Identity</span>
+        <span class="skill-pill">Illustration</span>
+        <span class="skill-pill">Typography</span>
+        <span class="skill-pill">Print Design</span>
+        <span class="skill-pill">UI / Web Design</span>
+        <span class="skill-pill">Motion Graphics</span>
+      </div>
+    </div>
+
+    <!--
+      ╔═══════════════════════════════════════════╗
+      ║  YOUR PHOTO GOES HERE                      ║
+      ║                                            ║
+      ║  To add your transparent-bg photo:         ║
+      ║  1. Export your photo as a PNG with        ║
+      ║     transparent background                 ║
+      ║  2. Place it in the same folder as         ║
+      ║     index.html, name it: photo.png         ║
+      ║  3. Replace the 3 .about-strip divs with:  ║
+      ║                                            ║
+      ║  <div class="about-photo-panel">           ║
+      ║    <div class="about-blob"></div>          ║
+      ║    <img src="photo.png"                    ║
+      ║         alt="Raghav Chandra"               ║
+      ║         class="about-photo-main">          ║
+      ║  </div>                                    ║
+      ║                                            ║
+      ║  And add this CSS in <style>:              ║
+      ║  .about-photo-main {                       ║
+      ║    position: relative; z-index: 2;         ║
+      ║    max-height: 460px;                      ║
+      ║    width: auto;                            ║
+      ║    object-fit: contain;                    ║
+      ║  }                                         ║
+      ╚═══════════════════════════════════════════╝
+    -->
+    <div class="about-photo-panel">
+      <div class="about-blob"></div>
+      <div class="about-photo-frame" style="position:relative;z-index:2;">
+        <div class="about-strips">
+          <div class="about-strip">
+            <p class="about-strip-label">Drop your photo here<br>(see comment in code)</p>
+          </div>
+          <div class="about-strip">
+            <p class="about-strip-label">Transparent background PNG works best</p>
+          </div>
+          <div class="about-strip">
+            <p class="about-strip-label">Portrait orientation ideal</p>
+          </div>
+        </div>
+        <div class="about-big-text">about</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section id="contact">
+  <h2 class="contact-big">Let's make<br>something <em>great.</em></h2>
+  <p class="contact-sub">Whether it's a brand identity, an illustration, or something you haven't quite named yet — I'd love to hear about it.</p>
+  <div class="contact-links">
+    <a href="javascript:void(0)" onclick="showMessagePage()" class="btn-primary">Send me a message</a>
+    <!--
+      ╔═══════════════════════════════════════════╗
+      ║  YOUR CV / RESUME                          ║
+      ║  1. Save your CV as: resume.pdf            ║
+      ║  2. Place it in the same folder as         ║
+      ║     index.html                             ║
+      ║  3. The button below will then work!       ║
+      ║  That's it — no code change needed.        ║
+      ╚═══════════════════════════════════════════╝
+    -->
+    <a href="resume.pdf" download="Raghav_Chandra_CV.pdf" class="btn-secondary">Download CV</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">Raghav Chandra</span>
+  <div class="footer-socials">
+    <a href="#">Instagram</a>
+    <a href="#">Behance</a>
+    <a href="#">LinkedIn</a>
+  </div>
+  <p>Designed &amp; built with intention. © 2026</p>
+</footer>
+
+</div><!-- end #main-content -->
+
+<!-- ═══════════════════════════════════════
+     ALL WORKS PAGE
+════════════════════════════════════════ -->
+<div id="all-works">
+  <button class="back-btn" onclick="showMain()">← Back to home</button>
+  <div>
+    <p class="section-label">All Projects</p>
+    <h2 class="section-title">Everything I've made.</h2>
+  </div>
+  <div class="all-works-grid">
+
+    <a href="javascript:void(0)" class="work-card">
+      <div class="work-card-thumb thumb-pink">
+        <div class="thumb-deco"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="28" stroke="white" stroke-width="3" fill="none"/><path d="M28 40 L36 48 L52 32" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+      <p class="work-card-label">Brand Identity</p>
+      <p class="work-card-title">Personal Branding — Raghav Chandra</p>
+    </a>
+
+    <a href="javascript:void(0)" class="work-card">
+      <div class="work-card-thumb thumb-navy">
+        <div class="thumb-deco"><svg viewBox="0 0 80 80" fill="none"><rect x="16" y="20" width="48" height="40" rx="4" stroke="white" stroke-width="3" fill="none"/><line x1="16" y1="32" x2="64" y2="32" stroke="white" stroke-width="2"/></svg></div>
+      </div>
+      <p class="work-card-label">UI Design</p>
+      <p class="work-card-title">App Interface Design</p>
+    </a>
+
+    <a href="javascript:void(0)" class="work-card">
+      <div class="work-card-thumb thumb-orange">
+        <div class="thumb-deco"><svg viewBox="0 0 80 80" fill="none"><path d="M20 60 L20 30 L40 15 L60 30 L60 60 Z" stroke="white" stroke-width="3" fill="none" stroke-linejoin="round"/></svg></div>
+      </div>
+      <p class="work-card-label">Print Design</p>
+      <p class="work-card-title">Editorial &amp; Print Collateral</p>
+    </a>
+
+    <a href="javascript:void(0)" class="work-card">
+      <div class="work-card-thumb thumb-cream">
+        <div class="thumb-deco"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="30" r="14" stroke="#253985" stroke-width="3" fill="none"/><path d="M28 50 C28 44 34 40 40 40 C46 40 52 44 52 50 L54 60 H26 Z" stroke="#253985" stroke-width="3" fill="none"/></svg></div>
+      </div>
+      <p class="work-card-label">Illustration</p>
+      <p class="work-card-title">Character Design &amp; Illustration</p>
+    </a>
+
+    <a href="javascript:void(0)" class="work-card">
+      <div class="work-card-thumb thumb-pink">
+        <div class="thumb-deco"><svg viewBox="0 0 80 80" fill="none"><rect x="20" y="16" width="40" height="48" rx="4" stroke="white" stroke-width="3" fill="none"/><line x1="28" y1="30" x2="52" y2="30" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="28" y1="40" x2="52" y2="40" stroke="white" stroke-width="2" stroke-linecap="round"/><line x1="28" y1="50" x2="42" y2="50" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+      </div>
+      <p class="work-card-label">Typography</p>
+      <p class="work-card-title">Type System Design</p>
+    </a>
+
+    <a href="javascript:void(0)" class="work-card">
+      <div class="work-card-thumb thumb-navy">
+        <div class="thumb-deco"><svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="20" stroke="white" stroke-width="3" fill="none"/><path d="M40 20 L40 40 L55 55" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></div>
+      </div>
+      <p class="work-card-label">Social Media</p>
+      <p class="work-card-title">Social Media Kit</p>
+    </a>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MESSAGE PAGE
+════════════════════════════════════════ -->
+<div id="message-page">
+  <button class="back-btn" onclick="showMain()">← Back to home</button>
+  <h2 class="message-heading">Say <span>hello.</span></h2>
+  <p class="message-sub">Fill out the form below and I'll get back to you within 24 hours.</p>
+
+  <div class="contact-form" id="contactForm">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="f-name">Your name</label>
+        <input type="text" id="f-name" placeholder="e.g. Priya Sharma" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="f-email">Email address</label>
+        <input type="email" id="f-email" placeholder="priya@email.com" autocomplete="email">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="f-type">What do you need?</label>
+      <select id="f-type">
+        <option value="" disabled selected>Choose a project type...</option>
+        <option>Brand Identity / Logo</option>
+        <option>Illustration</option>
+        <option>Print Design</option>
+        <option>Social Media Design</option>
+        <option>Web / UI Design</option>
+        <option>Something else</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="f-budget">Budget range (optional)</label>
+      <select id="f-budget">
+        <option value="" disabled selected>Select a range...</option>
+        <option>Under $500</option>
+        <option>$500 – $1,500</option>
+        <option>$1,500 – $5,000</option>
+        <option>$5,000+</option>
+        <option>Let's talk</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="f-message">Tell me about your project</label>
+      <textarea id="f-message" placeholder="What are you working on? What's the vibe? What do you need? The more detail, the better — I love a good brief."></textarea>
+    </div>
+
+    <div class="form-submit">
+      <button class="btn-primary" onclick="submitForm()">Send it over →</button>
+      <p class="form-note">I usually reply within 24 hours.</p>
+    </div>
+  </div>
+
+  <div class="form-success" id="formSuccess">
+    <p>🎉 Message received! I'll be in touch soon.</p>
+    <p style="margin-top:0.5rem;font-weight:400;color:#555;font-size:0.9rem;">While you wait, feel free to check out more of my work.</p>
+    <br>
+    <a href="javascript:void(0)" onclick="showAllWorks()" class="btn-primary" style="font-size:0.85rem;">Browse all projects</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SCROLL TO TOP
+════════════════════════════════════════ -->
+<button id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Back to top">↑</button>
+
+<!-- ═══════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════ -->
+<script>
+/* ── PAGE ROUTING ── */
+function showMain(hash) {
+  document.getElementById('main-content').style.display = 'block';
+  document.getElementById('all-works').style.display = 'none';
+  document.getElementById('message-page').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (hash) {
+    setTimeout(() => {
+      const el = document.querySelector(hash);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+}
+
+function showAllWorks() {
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('all-works').style.display = 'block';
+  document.getElementById('message-page').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showMessagePage() {
+  document.getElementById('main-content').style.display = 'none';
+  document.getElementById('all-works').style.display = 'none';
+  document.getElementById('message-page').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── FORM SUBMIT (frontend only — wire to Formspree or EmailJS later) ── */
+function submitForm() {
+  const name    = document.getElementById('f-name').value.trim();
+  const email   = document.getElementById('f-email').value.trim();
+  const message = document.getElementById('f-message').value.trim();
+
+  if (!name || !email || !message) {
+    alert('Please fill in your name, email, and message — then I can actually reply 😄');
+    return;
+  }
+
+  // Show success state
+  document.getElementById('contactForm').style.display = 'none';
+  document.getElementById('formSuccess').classList.add('show');
+}
+
+/* ── SMOOTH SCROLL for hash links ── */
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      showMain();
+      setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+    }
+  });
+});
+
+/* ── NAV border on scroll ── */
+const nav = document.querySelector('nav');
+window.addEventListener('scroll', () => {
+  nav.style.borderBottom = window.scrollY > 40 ? '1px solid rgba(0,0,0,0.08)' : 'none';
+  const btn = document.getElementById('scroll-top');
+  if (window.scrollY > 400) {
+    btn.classList.add('visible');
+  } else {
+    btn.classList.remove('visible');
+  }
+});
+
+/* ── LOADER → SCATTER SEQUENCE ── */
+(function() {
+  const loader = document.getElementById('loader');
+  const loaderIcons = document.querySelectorAll('.loader-icon');
+  const floatingIcons = document.querySelectorAll('.floating-icon');
+
+  // Step 1: shoot loader icons up (CSS animation triggers via .shoot class)
+  setTimeout(() => {
+    loaderIcons.forEach(icon => icon.classList.add('shoot'));
+  }, 400);
+
+  // Step 2: after ~2s, fade out loader and scatter icons into position
+  setTimeout(() => {
+    loader.classList.add('hidden');
+
+    // Trigger scatter on each hero icon
+    setTimeout(() => {
+      floatingIcons.forEach((icon, i) => {
+        // Calculate "from" positions relative to center of screen
+        // Each icon scatters outward from roughly center
+        const rect = icon.parentElement.getBoundingClientRect();
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const iconStyle = window.getComputedStyle(icon);
+        const iconLeft = parseFloat(icon.style.left || 0);
+        const iconRight = parseFloat(icon.style.right || 0);
+        const iconTop = parseFloat(icon.style.top || 0);
+
+        // Rough delta from center — icons scatter outward
+        icon.classList.add('scattered');
+      });
+    }, 300);
+
+  }, 2200);
+})();
+</script>
+
+</body>
+</html>
