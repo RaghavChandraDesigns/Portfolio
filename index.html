@@ -135,6 +135,12 @@ nav {
   cursor: pointer;
 }
 
+.nav-logo {
+  height: 75px;
+  width: auto;
+  display: block;
+}
+
 .nav-links {
   display: flex;
   gap: 2rem;
@@ -998,7 +1004,9 @@ footer p {
     ║     </a>                             ║
     ╚══════════════════════════════════════╝
   -->
-  <span class="nav-name" onclick="showMain()" style="cursor:pointer;">Raghav Chandra</span>
+ <a href="#" onclick="showMain()">
+  <img src="typelogo.png" alt="Raghav Chandra" class="nav-logo">
+</a>
   <ul class="nav-links">
     <li><a href="#work" onclick="showMain()">Work</a></li>
     <li><a href="#about" onclick="showMain()">About</a></li>
